@@ -45,7 +45,7 @@ export class LoadData extends Component {
                 header: true,
             }
         )
-        this.date.setDate(this.date.getDate() - 2);
+        this.date.setDate(this.date.getDate() - 1);
 
         let newDt = this.date.toLocaleDateString('en-GB');
 
@@ -59,7 +59,7 @@ export class LoadData extends Component {
 
 
         //make a diff
-        this.oldDate.setDate(this.oldDate.getDate() - 3);
+        this.oldDate.setDate(this.oldDate.getDate() - 2);
 
         let oldDt = this.oldDate.toLocaleString('en-GB');
 
