@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { readRemoteFile as ReadRemoteFile } from 'react-papaparse'
+import { Form, Table, Button } from 'react-bootstrap'
 
 
 
@@ -13,7 +14,8 @@ export class LoadData extends Component {
 
         this.state = {
             newResults: [],
-            arrOfCases: []
+            arrOfCases: [],
+            countryInput:"India",
         }
 
     }
@@ -37,7 +39,7 @@ export class LoadData extends Component {
                         this.state.newResults.data ? this.newArrayList = this.state.newResults.data : this.newArrayList = []
 
 
-                        this.props.caseData(this.totalFun(), this.checkCountry("Thailand"))
+                        this.props.caseData(this.totalFun())
                     })
                 },
                 header: true,
@@ -83,29 +85,57 @@ export class LoadData extends Component {
 
     countryDatacheck = 0;
     checkCountry = (testing) => {
-        console.log(typeof testing)
         this.newArrayList.map((check, index) => (check["Country/Region"] === testing ? (this.countryDatacheck = this.countryDatacheck + parseInt(check[this.newdate])) : "undefined"))
+        
         return this.countryDatacheck
     }
+
 
     // newArray = [];
     // // newArray = this.state.newResults.data;
 
+
+    changeHandler = e =>{
+        this.setState({
+            [e.target.name]:e.target.value
+        })
+    }
+
+handleSubmit = e => {
+    e.preventDefault();
+    this.props.countryCaseData(this.checkCountry(this.state.countryInput),this.state.countryInput)
+    this.countryDatacheck=0;
+}
 
 
 
 
 
     render() {
-        let dataCheck = null;
+        // let dataCheck = null;
+
+
 
 
         return (
-            <div>
+            <>
 
 
 
-                <table className='container'>
+                <Form onSubmit={this.handleSubmit} style={{ textAlign:"center"}}>
+                    <Form.Group >
+                        <Form.Control type="text" placeholder="Enter Country Name" name="countryInput" value={this.state.countryInput} onChange={this.changeHandler}/>
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Check Total Cases
+                    </Button> 
+
+                </Form>
+
+                <br></br>
+
+
+                <Table striped bordered hover responsive variant>
 
                     <thead>
                         <tr>
@@ -125,7 +155,7 @@ export class LoadData extends Component {
                             </tr>
                         )}
                     </tbody>
-                </table>
+                </Table>
                 {/* 
                 <Country countryList={this.newArrayList.map((countryListNew, index) => {
                     return (
@@ -149,7 +179,7 @@ export class LoadData extends Component {
 
 
 
-            </div>
+            </>
         )
     }
 }

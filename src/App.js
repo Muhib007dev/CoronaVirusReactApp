@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './App.css';
 import axios from 'axios';
 import LoadData from './Components/CoronaVirusDataService'
-import { Jumbotron, Form, Col } from 'react-bootstrap';
+import { Jumbotron, Card } from 'react-bootstrap';
 
 
 
@@ -15,7 +15,8 @@ class App extends Component {
       posts: [],
       errorMsg: '',
       totalcase: 0,
-      countryCases: 0
+      countryCases: 0,
+      countryNameGiven:''
     }
   }
 
@@ -31,17 +32,24 @@ class App extends Component {
       })
   }
 
-  totalCaseHandler = (receiveData, receiveData2) => {
+  totalCaseHandler = (receiveData) => {
     this.setState({
-      totalcase: receiveData,
-      countryCases: receiveData2
+      totalcase: receiveData
     })
   }
 
+  countryCaseHandler = (receiveData,countryInputName) => {
+    this.setState(
+      {
+        countryCases: receiveData,
+        countryNameGiven: countryInputName
+      }
+    )
+  }
   render() {
     // const {posts} = this.state
     return (
-      <div>
+      <div style={{ textAlign: "center", alignItems:"center" }}>
         <h1>Corona Virus Tracker Application</h1>
         <p>This application lists the current number of cases reported across the globe</p>
 
@@ -54,18 +62,21 @@ class App extends Component {
         </Jumbotron>
 
 
+        <Card >
+          <Card.Body>
+            <Card.Title>Cases In</Card.Title>
+    <Card.Subtitle className="mb-2 text-muted">{this.state.countryNameGiven}</Card.Subtitle>
+            <Card.Text>
+              {this.state.countryCases}
+            </Card.Text>
+          </Card.Body>
+        </Card>
+
+        <br></br>
 
 
 
-
-
-
-
-
-
-        {this.state.countryCases}
-
-        <LoadData caseData={this.totalCaseHandler} />
+        <LoadData caseData={this.totalCaseHandler} countryCaseData={this.countryCaseHandler} />
 
 
       </div>
