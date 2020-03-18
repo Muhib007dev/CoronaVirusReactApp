@@ -3,19 +3,18 @@ import { readRemoteFile as ReadRemoteFile } from 'react-papaparse'
 import { Form, Table, Button } from 'react-bootstrap'
 
 
-
-const url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
-
+const url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv'
 
 
-export class LoadData extends Component {
+class CoronaVirusDataServiceRecovered extends Component {
+
     constructor(props) {
         super(props)
 
         this.state = {
             newResults: [],
             arrOfCases: [],
-            countryInput:"",
+            countryInput: "",
         }
 
     }
@@ -45,7 +44,7 @@ export class LoadData extends Component {
                 header: true,
             }
         )
-        this.date.setDate(this.date.getDate() - 1);
+        this.date.setDate(this.date.getDate() - 2);
 
         let newDt = this.date.toLocaleDateString('en-GB');
 
@@ -59,7 +58,7 @@ export class LoadData extends Component {
 
 
         //make a diff
-        this.oldDate.setDate(this.oldDate.getDate() - 2);
+        this.oldDate.setDate(this.oldDate.getDate() - 3);
 
         let oldDt = this.oldDate.toLocaleString('en-GB');
 
@@ -86,7 +85,7 @@ export class LoadData extends Component {
     countryDatacheck = 0;
     checkCountry = (testing) => {
         this.newArrayList.map((check, index) => (check["Country/Region"] === testing ? (this.countryDatacheck = this.countryDatacheck + parseInt(check[this.newdate])) : "undefined"))
-        
+
         return this.countryDatacheck
     }
 
@@ -102,18 +101,18 @@ export class LoadData extends Component {
     // // newArray = this.state.newResults.data;
 
 
-    changeHandler = e =>{
+    changeHandler = e => {
         this.setState({
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
         })
     }
 
-handleSubmit = e => {
-    e.preventDefault();
-    this.props.countryCaseData(this.checkCountry(this.state.countryInput),this.state.countryInput,this.checkCountry1(this.state.countryInput))
-    this.countryDatacheck=0;
-    this.countryDatacheck1=0;
-}
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.countryCaseData(this.checkCountry(this.state.countryInput), this.state.countryInput, this.checkCountry1(this.state.countryInput))
+        this.countryDatacheck = 0;
+        this.countryDatacheck1 = 0;
+    }
 
 
 
@@ -128,13 +127,15 @@ handleSubmit = e => {
         return (
             <>
 
-                <Form onSubmit={this.handleSubmit} style={{ textAlign:"center"}}>
+
+
+                <Form onSubmit={this.handleSubmit} style={{ textAlign: "center" }}>
                     <Form.Group >
-                        <Form.Control style={{ textAlign: "center" }} type="text" placeholder="Enter Country Name" name="countryInput" value={this.state.countryInput} onChange={this.changeHandler}/>
+                        <Form.Control style={{ textAlign: "center" }} type="text" placeholder="Enter Country Name(Case Sensitive)" name="countryInput" value={this.state.countryInput} onChange={this.changeHandler} />
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Check Total Cases
-                    </Button> 
+                    </Button>
 
                 </Form>
 
@@ -147,8 +148,8 @@ handleSubmit = e => {
                         <tr>
                             <th>Country</th>
                             <th>State</th>
-                            <th>Cases Confirmed</th>
-                            <th>Changes since last day</th>
+                            <th>Total Recovered</th>
+                            <th>Recovered since last day</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,5 +190,4 @@ handleSubmit = e => {
         )
     }
 }
-
-export default LoadData
+export default CoronaVirusDataServiceRecovered
